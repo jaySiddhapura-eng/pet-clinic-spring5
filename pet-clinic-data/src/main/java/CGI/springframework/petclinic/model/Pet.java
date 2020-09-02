@@ -3,15 +3,15 @@ package CGI.springframework.petclinic.model;
 import java.time.LocalDate;
 
 public class Pet {
-    private petType petType;
+    private PetType petType;
     private Owner owner;
     private LocalDate birthDate;
 
-    public CGI.springframework.petclinic.model.petType getPetType() {
+    public PetType getPetType() {
         return petType;
     }
 
-    public void setPetType(CGI.springframework.petclinic.model.petType petType) {
+    public void setPetType(PetType petType) {
         this.petType = petType;
     }
 
