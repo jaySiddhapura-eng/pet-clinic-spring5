@@ -18,7 +18,7 @@
 
 	<groupId>CGI.springframework</groupId>
 	<artifactId>pet-clinic</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<name>pet-clinic</name>
 	<description>spring demo project</description>
 
@@ -83,7 +83,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:jaySiddhapura-eng/pet-clinic-spring5.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>pet-clinic-0.0.3</tag>
 	</scm>
 
 </project>
