@@ -192,15 +192,16 @@ spring-5-pet-clinic-project-master
 1. Location : pet-clinic-data module / project
 
    ~~~powershell
-    pet-clinic-data.......[Module 1]
+   pet-clinic-data.......[Module 1]
        ├── src
        │   └── java
-       │       └── CGI.springframework.petclinic.model
-       │           ├── Owner   (C)
-       │           ├── Person  (C)
-       │           ├── Pet     (C)
-       │           ├── PetType (C)
-       │           └── Vet     (C)
+       │       └── CGI.springframework.petclinic
+       │           └── model
+       │               ├── Person  (C)
+       │               ├── Owner   (C)
+       │               ├── Vet     (C)
+       │               ├── Pet     (C)
+       │               └── PetType (C)
        ├── target
        └── pom.xml
    ~~~
@@ -251,7 +252,146 @@ spring-5-pet-clinic-project-master
    }
    ~~~
 
-   
+
+## Create the Service Layer
+
+1. Location of services
+
+   ~~~powershell
+    pet.clinic.data
+       ├── src
+       │   ├── main
+       │   │   └── java
+       │   │       └── CGI.springframework.petclinic
+       │   │           └── Services
+       │   │               ├── OwnerService
+       │   │               ├── PetService
+       │   │               └── VetService
+       │   └── test
+       └── pom.xml
+   ~~~
+
+2. ```OwnerService``` 
+
+   ~~~java
+   public interface OwnerService{
+       // methods declaration
+       Owner findByLastName(String lastName);
+       Owner findById(Long id);
+       Owner save(Owner owner);
+       Set<Owner> findAll();
+       void delete(Owner owner);
+       void deleteById(Long id);
+   }
+   //whichever class implements this service must implements all the methods declared above
+   ~~~
+
+3. ```PetService```
+
+   ~~~java
+   public interface PetService{
+       Pet findById(Long id);
+       Pet save(Pet pet);
+       Set<Pet> findAll();
+       void delete(Pet pet);
+       void deleteById(Long id);
+   }
+   ~~~
+
+4. ```VetService```
+
+   ~~~java
+   public interface VetService{
+       Vet findByLastName(String lastName);
+       Vet findById(Long id);
+       Vet save(Vet vet);
+       Set<Vet> findAll();
+       void delete(Vet vet);
+       void deleteById(Long id);
+   }
+   ~~~
+
+5. If we notice, we can see all three class has some of the similar methods such as ```findAll, findById, save, delete and deleteAll```
+
+6. Although the methods are same but it handles different kind of data such as ```Vet, Pet, Owner``` according to the service
+
+7. We can create an Parent interface which will be generic in nature, so that all the services can extend that interface regardless of the data the they handles
+
+8. This parent interface will have all the common methods, which reduces the code duplication
+
+9. Create the parent interface : ```CrudService``` interface
+
+   ~~~java
+   public interface CrudService <T, ID> {
+       T findById(ID id);
+       T save(T object);
+       Set<T> findAll();
+       void delete(T object);
+       void deleteById(ID id);
+   }
+   // T and ID will be supplied from the interface which will extend this interface
+   ~~~
+
+10. Modifying the child services
+
+11. ```OwnerService``` Interface
+
+    ~~~java
+    // Owner is the datatype which will apply to the methods of Crudservice
+    public interface OwnerService extends CrudService <Owner, Long>{
+        Owner findByLastName(String lastName);
+        // other methods are already declared in the CrudService Interface
+    }
+    ~~~
+
+12. ```PetService``` interface
+
+    ~~~java
+    // Pet is the datatype which will apply to the methods of CrudService 
+    public interface PetService extends CrudService<Pet, Long> {
+        // all the methods are already declared in the CrudService interface
+    }
+    ~~~
+
+13. ```VetService``` interface
+
+    ~~~java
+    // Pet is the datatype which will apply to the methods of CrudService
+    public interface VetService extends CrudService<Vet, Long>{
+        Vet findByLastName(String lastName);
+        // other methods are already declared in the CrudService Interface
+    }
+    ~~~
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+     
 
 
 
