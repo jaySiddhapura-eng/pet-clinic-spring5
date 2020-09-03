@@ -252,7 +252,6 @@ spring-5-pet-clinic-project-master
    }
    ~~~
 
-
 ## Create the Service Layer
 
 1. Location of services
@@ -363,35 +362,113 @@ spring-5-pet-clinic-project-master
     }
     ~~~
 
-    
 
-    
+## Map Based Services
 
-    
+1. This is just another type of service implementation which we can use
 
-    
+2. Create ```Map``` package in the ```Service``` package
 
-    
+3. Create ```AbstractMapService``` an generic abstract class
 
-    
+4. Which has one hashmap as private property and methods to access this hashmap
 
-    
+   ~~~java
+   public abstract class AbstractMapService<T, ID>{
+       protected Map<ID, T> map = new HashMap<ID,T>();
+   
+       Set<T> findAllInMap(){
+           return new HashSet<>(map.values());
+       }
+   
+       T findByIdInMap(ID id){
+           return map.get(id);
+       }
+   
+       T saveInMap(ID id, T object){
+           map.put(id, object);
+           return object;
+       }
+   
+       void deleteByIdInMap(ID id){
+           map.remove(id);
+       }
+   
+       void deleteInMap(T object){
+           map.entrySet().removeIf(entry -> entry.getValue().equals(object));
+       }
+   }
+   ~~~
 
-    
+5. Implement ```OwnerServiceMap``` class, which will extend the ```AbstractMapService```
 
-    
+6. Since ```OwnerServiceMap``` class extends the ```AbstractMapService```, it can use all the methods which are implemented in ```AbstractMapService``` using ```super``` keyword when accessing the methods
 
-    
+7. ```OwnerServiceMap``` class also implements the ```OwnerService``` interface, therefore ```OwnerServiceMap``` must implements all the methods which are declared in ```OwnerService``` 
 
-    
+8. In nutshell, ```OwnerServiceMap``` uses the methods of ```AbstractMapService```, to implements the methods of ```OwnerService```
 
-    
+   ~~~java
+   public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService{
+   
+       @Override
+       public Owner findByIdCrud(Long id) {
+           return super.findByIdInMap(id); 
+       }
+   
+       @Override
+       public Owner saveCrud(Owner object) {
+           return super.saveInMap(object.getId(),object);   
+       }
+   
+       @Override
+       public Set<Owner> findAllCrud() {
+           return super.findAllInMap();     
+       }
+   
+       @Override
+       public void deleteByIdCrud(Long id) {
+           super.deleteByIdInMap(id);       
+       }
+   
+       @Override
+       public void deleteCrud(Owner object) {
+           super.deleteInMap(object);       
+       }
+   }
+   ~~~
 
-    
+9. Similarly ```PetServiceMap``` and ```VetServiceMap``` are implemented
 
-    
+10. ```PetServiceMap``` extends ```AbstractMapService``` and implements ```PetService```
 
-     
+11. ```VetServiceMap``` extends ```AbstractMapService``` and implements ```VetService```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
 

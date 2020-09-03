@@ -1,0 +1,39 @@
+package CGI.springframework.petclinic.services.Map;
+
+import CGI.springframework.petclinic.model.Owner;
+import CGI.springframework.petclinic.services.CrudService;
+
+import java.util.Set;
+
+public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements CrudService<Owner,Long> {
+
+    // this method is declared in CrudService
+    @Override
+    public Owner findByIdCrud(Long id) {
+        return super.findByIdInMap(id);  // this method is implemented in Abstract map service
+    }
+
+    // this method is declared in CrudService
+    @Override
+    public Owner saveCrud(Owner object) {
+        return super.saveInMap(object.getId(),object);   // this method is implemented in Abstract map service
+    }
+
+    // this method is declared in CrudService
+    @Override
+    public Set<Owner> findAllCrud() {
+        return super.findAllInMap();     // this method is implemented in Abstract map service
+    }
+
+    // this method is declared in CrudService
+    @Override
+    public void deleteByIdCrud(Long id) {
+        super.deleteByIdInMap(id);       // this method is implemented in Abstract map service
+    }
+
+    // this method is declared in CrudService
+    @Override
+    public void deleteCrud(Owner object) {
+        super.deleteInMap(object);       // this method is implemented in Abstract map service
+    }
+}
