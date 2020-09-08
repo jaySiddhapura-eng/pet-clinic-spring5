@@ -497,6 +497,73 @@ spring-5-pet-clinic-project-master
    }
    ~~~
 
+## Create Vet Page and it's Controller
+
+1. Create ```VetController``` in the ```controllers``` package of the pet-clinic-web
+
+2. ```VetController``` will map the request such has ```vets, vets/index, vets/index.html```
+
+3. And return the html view whose name is ```vets/index.html```
+
+   ~~~java
+   @Controller
+   public class VetController {
+   
+       // mapping happen here 
+       @RequestMapping({"/vets", "/vets/index", "vets/index.html"})
+       public String vetList(){
+           // return the following view
+           return "vets/index";
+       }
+   }
+   ~~~
+
+4. Create the ```vet/index.html``` view in the templates folder
+
+   ~~~html
+   <!DOCTYPE html>
+   <html lang="en"  xmlns:th="http://www.thymeleaf.org">
+   	<head>
+       	<meta charset="UTF-8">
+       	<title>Pet Clinic Index</title>
+   	</head>
+   	<body>
+   		<h1 th:text="'List of Vets'">List of Vets</h1>
+   	</body>
+   </html>
+   ~~~
+
+## Create Owner Page and it's controller
+
+1. The process is exactly same as above section
+
+2. Owner controller
+
+   ~~~java
+   @Controller
+   public class OwnerController {
+   
+       @RequestMapping({"owners", "owners/index", "owners/index.html"})
+       public String OwnerList(){
+           return "owners/index";
+       }
+   }
+   ~~~
+
+3. Owner page
+
+   ~~~html
+   <html lang="en"  xmlns:th="http://www.thymeleaf.org">
+   	<head>
+       	<meta charset="UTF-8">
+       	<title>Owners Index</title>
+   	</head>
+   	<body>
+   		<h1 th:text="'List of Owners'">List of Owners</h1>
+   	</body>
+   </html>
+   ~~~
+
    
 
 
