@@ -444,6 +444,61 @@ spring-5-pet-clinic-project-master
 
 11. ```VetServiceMap``` extends ```AbstractMapService``` and implements ```VetService```
 
+## Create the index page and Its controller
+
+1. Create the ```index.html``` file in the following location
+
+   ~~~powershell
+   pet.clinic.web
+      └── src
+          └── main
+              └── resources
+                  └── templates
+                      └── index.html
+   ~~~
+
+2. Basic thymeleaf based index page
+
+   ~~~html
+   <html lang="en"  xmlns:th="http://www.thymeleaf.org">
+   	<head>
+       	<meta charset="UTF-8">
+       	<title>Pet Clinic Index</title>
+   	</head>
+   	<body>
+       	<h1 th:text="'Index page'">Index Page</h1>
+   	</body>
+   </html>
+   ~~~
+
+3. Create the ```IndexController``` in the following location
+
+   ~~~powershell
+   pet.clinic.web
+       └── src
+           └── main
+               └── java
+                   └── CGI.springframework.petclinic
+                       └── Controllers
+                           └── IndexConroller
+   ~~~
+
+4. ```IndexContoller``` will map certain request and return the index page as follow
+
+   ~~~java
+   @Controller
+   public class IndexController {
+       // if user reach following end points execute the method
+       @RequestMapping({"","/","index.html"})
+       public String index(){
+           // returning the html page whoes name is index
+           return "index";
+       }
+   }
+   ~~~
+
+   
+
 
 
 
