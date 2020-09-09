@@ -19,7 +19,7 @@ public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetS
     // this method is declared in CrudService
     @Override
     public Pet saveCrud(Pet object) {
-        return super.saveInMap(object.getId(),object); // this method is implemented in Abstract map service
+        return super.saveInMap(object); // this method is implemented in Abstract map service
     }
 
     // this method is declared in CrudService

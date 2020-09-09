@@ -19,7 +19,7 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetS
     // this method is declared in CrudService
     @Override
     public Vet saveCrud(Vet object) {
-        return super.saveInMap(object.getId(),object); // this method is implemented in Abstract map service
+        return super.saveInMap(object); // this method is implemented in Abstract map service
     }
 
     // this method is declared in CrudService

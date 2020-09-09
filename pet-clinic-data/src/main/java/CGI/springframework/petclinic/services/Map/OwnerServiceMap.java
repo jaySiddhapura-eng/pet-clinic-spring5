@@ -18,7 +18,7 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
     // this method is declared in CrudService
     @Override
     public Owner saveCrud(Owner object) {
-        return super.saveInMap(object.getId(),object);   // this method is implemented in Abstract map service
+        return super.saveInMap(object);   // this method is implemented in Abstract map service
     }
 
     // this method is declared in CrudService
