@@ -2,10 +2,13 @@ package CGI.springframework.petclinic.services.Map;
 
 import CGI.springframework.petclinic.model.Vet;
 import CGI.springframework.petclinic.services.CrudService;
+import CGI.springframework.petclinic.services.VetService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-public class VetServiceMap extends AbstractMapService<Vet, Long> implements CrudService<Vet,Long> {
+@Service
+public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
 
     // this method is declared in CrudService
     @Override
@@ -35,5 +38,10 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements Crud
     @Override
     public void deleteCrud(Vet object) {
         super.deleteInMap(object); // this method is implemented in Abstract map service
+    }
+
+    @Override
+    public Vet findByLastName(String lastName) {
+        return null;
     }
 }

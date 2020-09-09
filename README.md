@@ -409,6 +409,7 @@ spring-5-pet-clinic-project-master
 8. In nutshell, ```OwnerServiceMap``` uses the methods of ```AbstractMapService```, to implements the methods of ```OwnerService```
 
    ~~~java
+   @Service
    public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService{
    
        @Override
@@ -443,6 +444,8 @@ spring-5-pet-clinic-project-master
 10. ```PetServiceMap``` extends ```AbstractMapService``` and implements ```PetService```
 
 11. ```VetServiceMap``` extends ```AbstractMapService``` and implements ```VetService```
+
+12. Note: give all the map service implement a ```@Service``` stereotype so that spring will take this service and make bean
 
 ## Create the index page and Its controller
 
@@ -564,7 +567,174 @@ spring-5-pet-clinic-project-master
    </html>
    ~~~
 
+
+## Implementing bootstrap section
+
+1. Bootstrap section consist of code which will be executed first before every thing else after application starts
+
+2. This code generally sets up the different services, such as loading the data from database etc.
+
+3. Create the package name ```Bootstrap``` which will have all the bootstrap related classes
+
+4. The location of the ```bootstrap``` package
+
+   ~~~powershell
+   pet.clinic.web
+       └── src
+           └── main
+               └── java
+                   └── CGI.springframework.petclinic
+                       ├── bootstrap [P]
+                       ├── Controllers [P]
+                       └── MainAppClass [main]
+   ~~~
+
+5. Create the class name ```DataLoader``` inside the bootstrap package
+
+6. Make this class a spring component, so that spring pick up this class when startup
+
+7. This class also implement the ```commandlineRunner ``` therefore it implements the separate run method
+
+8. So whenever spring creates bean of this component, the run method will be executed, no need to call this method from anywhere to execute it
+
+   ~~~java
+   @Component
+   public class DataLoader implements CommandLineRunner {
+          @Override
+       	public void run(String... args) throws Exception {
+           }
+   }
+   ~~~
+
+9. Inject the previously created map based service into this ```DataLoader``` class
+
+10. We are actually telling spring about the interface of this service, spring automatically take the map based implementation of this service, because only one implementation is available. In case of multiple available implementation we need to provide which implementation to use in ```@Qualifier``` or using ```@PrimaryBean``` or using ```@Profile```
+
+11. The dependency is injected through constructor
+
+    ~~~java
+    public class DataLoader implements CommandLineRunner {
+        private final OwnerService ownerService;
+        private final VetService vetService;
+    
+        public DataLoader(OwnerService ownerService, VetService vetService) {
+            this.ownerService = ownerService;
+            this.vetService = vetService;
+        }
+        
+        @Override
+        public void run(String... args) throws Exception { 
+        }   
+    }    
+    ~~~
+
+12. Create some data object in the run method
+
+    ~~~java
+    @Override
+    public void run(String... args) throws Exception {
+       // two owner object added
+       Owner owner1 = new Owner();			// create new owner object
+       owner1.setId(1L);				   // setting ID property to this object	
+       owner1.setFirstName("abc");		    // setting firstName property of this object
+       owner1.setLastName("def");		    // setting lastName property of this subject
+       ownerService.saveCrud(owner1);	    // save the updated object in map using injected service
+    
+       Owner owner2 = new Owner();
+       owner2.setId(2L);
+       owner2.setFirstName("pqr");
+       owner2.setLastName("stu");
+       ownerService.saveCrud(owner2);
+    
+       System.out.println("Owners loaded..");
+    
+       // two vet object added
+       Vet vet1 = new Vet();
+       vet1.setId(1L);
+       vet1.setFirstName("jkl");
+       vet1.setLastName("mno");
+       vetService.saveCrud(vet1);
+    
+       Vet vet2 = new Vet();
+       vet2.setId(2L);
+       vet2.setFirstName("efg");
+       vet2.setLastName("hij");
+       vetService.saveCrud(vet2);
+    
+       System.out.println("Vets loaded..");
+    }
+    ~~~
+
+13. Whenever the run method executed this objects will be created and stored into the map using its service
+
+14. This run method will be executed every time when application starts, because this class implements the ```CommandLineRunner``` interface
+
+## Display the list of Owner
+
+1. In above section we were able to fill up the map data structure using its service dependency
+
+2. In this section we will retrieve the above saved Owners data from the map and display this data to the html view which is situated in ```owners/index.html```
+
+3. The actual data gathering from data structure is happening in the ```OwnerController```
+
+4. In ```OwnerController``` inject the ```OwnerService```
+
+   ~~~java 
+   @Controller
+   public class OwnerController {
+       private final OwnerService ownerService;
    
+       public OwnerController(OwnerService ownerService) {
+           this.ownerService = ownerService;
+       }
+   }
+   ~~~
+
+5. Modify the previously implemented ```OwnerList()``` method
+
+   ~~~java
+   @RequestMapping({"owners", "owners/index", "owners/index.html"})
+   public String OwnerList(Model model){
+       model.addAttribute("owners", ownerService.findAllCrud());
+       return "owners/index";
+   }
+   // gather the data and add it as an attribute to the model
+   // this thing is done using model.addAtribute()
+   // the name of the model is important because by using this name we will get the data in html
+   // returning the name of the page which need to be load when this method executed
+   // findAllCrud() method is implemented in the service implementation
+   ~~~
+
+6. Obtain the data in ```owners/index.html``` 
+
+   ~~~html
+   <body>
+   <h1 th:text="'List of Owners'">List of Owners</h1>
+       <table>
+           <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>First Name</th>
+                   <th>Last Name</th>
+               </tr>
+           </thead>
+           <!--following is thymeleaf template-->
+           <tbody>
+               <tr th:each="owner:${owners}">
+                   <td th:text="${owner.id}">1</td>
+                   <td th:text="${owner.firstName}">j</td>
+                   <td th:text="${owner.lastName}">k</td>
+               </tr>
+           </tbody>
+       </table>
+   </body>
+   <!--owners: is the model created in the controller-->
+   <!--We are basically iterating on the entire owners map
+   and for each iteration we are capturing individual object and fill the table
+   -->
+   ~~~
+
+7. **Similarly we are also loading the list of the Vets**
 
 
 
